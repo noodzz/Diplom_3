@@ -1,20 +1,36 @@
 package tests;
 
 import io.qameta.allure.Description;
+import models.User;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import pages.LoginPage;
 import pages.MainPage;
 import pages.RegistrationPage;
 import pages.ResetPasswordPage;
-import utils.TestData;
 import utils.Urls;
 
 import static org.junit.Assert.assertTrue;
 
-public class LoginTests extends BaseTest{
+public class LoginTests extends BaseTest {
+
+    @Before
+    public void setUpUser() {
+        email = "test" + System.currentTimeMillis() + "@yandex.ru";
+        password = "qwerty123";
+
+        User user = new User(email, password, "Bob");
+
+        accessToken = createUserApi.createUser(user)
+                .then()
+                .statusCode(200)
+                .extract()
+                .path("accessToken");
+    }
 
     private void login(LoginPage loginPage) {
-        loginPage.fillLoginForm(TestData.EMAIL, TestData.PASSWORD);
+        loginPage.fillLoginForm(email, password);
     }
 
     @Description("Логин через кнопку 'Войти в аккаунт' на главной странице")
@@ -86,5 +102,13 @@ public class LoginTests extends BaseTest{
 
         MainPage mainPage = new MainPage(driver);
         assertTrue(mainPage.isMainPageOpened());
+    }
+
+
+    @After
+    public void deleteUser() {
+        if (accessToken != null) {
+            deleteUserApi.deleteUser(accessToken);
+        }
     }
 }
