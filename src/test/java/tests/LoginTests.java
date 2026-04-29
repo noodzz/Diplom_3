@@ -11,20 +11,23 @@ import pages.RegistrationPage;
 import pages.ResetPasswordPage;
 import utils.Urls;
 
+import java.util.UUID;
+
+import static org.apache.http.HttpStatus.SC_OK;
 import static org.junit.Assert.assertTrue;
 
 public class LoginTests extends BaseTest {
 
     @Before
     public void setUpUser() {
-        email = "test" + System.currentTimeMillis() + "@yandex.ru";
+        email = "BobTheMinion" + UUID.randomUUID().toString().split("-")[0] + "@ya.ru";
         password = "qwerty123";
 
         User user = new User(email, password, "Bob");
 
         accessToken = createUserApi.createUser(user)
                 .then()
-                .statusCode(200)
+                .statusCode(SC_OK)
                 .extract()
                 .path("accessToken");
     }

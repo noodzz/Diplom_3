@@ -2,6 +2,7 @@ package tests;
 
 import api.CreateUserApi;
 import api.DeleteUserApi;
+import api.LoginApi;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Before;
@@ -18,6 +19,7 @@ public class BaseTest {
 
     CreateUserApi createUserApi = new CreateUserApi();
     DeleteUserApi deleteUserApi = new DeleteUserApi();
+    LoginApi loginApi = new LoginApi();
 
     @Before
     public void setup() {
